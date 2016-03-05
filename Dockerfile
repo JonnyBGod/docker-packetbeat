@@ -4,7 +4,7 @@
 FROM phusion/baseimage:latest
 MAINTAINER João Ribeiro <jonnybgod@gmail.com>
 
-ENV VERSION=1.0.1 PLATFORM=x86_64
+ENV VERSION=1.1.2 PLATFORM=x86_64
 ENV FILENAME=packetbeat-${VERSION}-${PLATFORM}.tar.gz 
 
 RUN apt-get update \

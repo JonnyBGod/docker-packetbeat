@@ -16,7 +16,7 @@ To build:
 
 To run:
 
-  docker run --net=host -d packetbeat packetbeat -e -c /etc/packetbeat/packetbeat.conf
+  docker run --net=host -d packetbeat
 
 The `--net=host` part makes it possible to sniff the traffic from other containers.
 
