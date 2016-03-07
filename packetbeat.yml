@@ -374,4 +374,5 @@ logging:
 
   # Sets log level. The default log level is error.
   # Available log levels are: critical, error, warning, info, debug
-  #level: error
+  level: {{LOG_LEVEL}}
+  

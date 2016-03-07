@@ -34,6 +34,7 @@ Two environment variables are needed:
 Optional variables:
 * `DEVICE`: to specify the network interfaces to sniff the data (default: any)
 * `INDEX`: to specify the elasticsearch index (default: packetbeat)
+* `LOG_LEVEL`: to specify the log level (default: error) 
 * `SHIPPER_NAME`: to specify the Packetbeat shipper name (default: the container ID)
 * `SHIPPER_TAGS`: to specify the Packetbeat shipper tags
 

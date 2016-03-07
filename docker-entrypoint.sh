@@ -24,7 +24,8 @@ if [ "$1" = 'start' ]; then
 
   sed -i "s#{{DEVICE}}#${DEVICE:-any}#g" ${PACKETBEAT_HOME}/packetbeat.yml
   sed -i "s#{{INDEX}}#${INDEX:-packetbeat}#g" ${PACKETBEAT_HOME}/packetbeat.yml
-  sed -i "s#{{SHIPPER_NAME}}#${SHIPPER_NAME}#g" ${PACKETBEAT_HOME}/packetbeat.yml
+  sed -i "s#{{LOG_LEVEL}}#${LOG_LEVEL:-error}#g" ${PACKETBEAT_HOME}/packetbeat.yml
+  sed -i "s#{{SHIPPER_NAME}}#${SHIPPER_NAME:-`hostname`}#g" ${PACKETBEAT_HOME}/packetbeat.yml
   sed -i "s#{{SHIPPER_TAGS}}#${SHIPPER_TAGS}#g" ${PACKETBEAT_HOME}/packetbeat.yml
 
   echo "Initializing Packetbeat..."
