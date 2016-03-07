@@ -3,28 +3,50 @@ jonnybgod/packetbeat
 
 [![](https://badge.imagelayers.io/jonnybgod/packetbeat:latest.svg)](https://imagelayers.io/?images=jonnybgod/packetbeat:latest)
 
-Packetbeat is an open source application monitoring and performance management (APM) system.
-See https://www.elastic.co/products/beats for details.
+# What is packetbeat?
+Packetbeat is an open source network packet analyzer that ships the data to Elasticsearch. Think of it like a distributed real-time Wireshark with a lot more analytics features.
+
+![alt text](https://static-www.elastic.co/assets/blta28996a125bb8b42/packetbeat-fish-nodes-bkgd.png?q=755 "Packetbeat logo")
+
+> https://www.elastic.co/products/beats/packetbeat
+
+# Why this image?
 
 This runs the Packetbeat agent inside it's own container, but by mounting the network host it is able to see the traffic from the other containers or from the applications running on the hosts.
 
-## How to use
+# How to use this image
+Build with:
 
-To build:
+```bash
+docker build -t packetbeat .
+```
 
-  docker build -t packetbeat .
+Start Packetbeat as follows:
 
-To run:
+```bash
+docker run -d \
+  --net=host \
+  -e LOGSTASH_HOST=monitoring.xyz -e LOGSTASH_PORT=5044 \
+  packetbeat
+```
 
-  docker run --net=host -d packetbeat
+Two environment variables are needed:
+* `LOGSTASH_HOST`: to specify on which server runs your Logstash
+* `LOGSTASH_PORT`: to specify on which port listens your Logstash for beats inputs
 
-The `--net=host` part makes it possible to sniff the traffic from other containers.
+Optional variables:
+* `DEVICE`: to specify the network interfaces to sniff the data (default: any)
+* `INDEX`: to specify the elasticsearch index (default: packetbeat)
+* `SHIPPER_NAME`: to specify the Packetbeat shipper name (default: the container ID)
+* `SHIPPER_TAGS`: to specify the Packetbeat shipper tags
 
-## From docker hub
-
-You can also pull the image from Docker Hub and run it like this:
-
-  docker pull jonnybgod/packetbeat
-  docker run --net=host -t -i jonnybgod/packetbeat packetbeat -e -c /etc/packetbeat/packetbeat.conf
-
-But note that you will need to provide your own `packetbeat.conf`.
+The docker-compose service definition should look as follows:
+```yalm
+packetbeat:
+  image: jonnybgod/packetbeat
+  restart: unless-stopped
+  net: host
+  environment:
+   - LOGSTASH_HOST=monitoring.xyz
+   - LOGSTASH_PORT=5000
+```

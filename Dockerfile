@@ -1,28 +1,26 @@
 # AUTHOR:         João Ribeiro <jonnybgod@gmail.com>
 # DESCRIPTION:    jonnybgod/packetbeat
 
-FROM phusion/baseimage:latest
+FROM frolvlad/alpine-glibc:alpine-3.3_glibc-2.23
 MAINTAINER João Ribeiro <jonnybgod@gmail.com>
+
+# Here we use several hacks collected from https://github.com/gliderlabs/docker-alpine/issues/11:
+# # 1. install GLibc (which is not the cleanest solution at all) 
 
 ENV VERSION=1.1.2 PLATFORM=x86_64
 ENV FILENAME=packetbeat-${VERSION}-${PLATFORM}.tar.gz 
 
-RUN apt-get update \
- && apt-get install -y --no-install-recommends libpcap0.8 \
- && apt-get clean \
- && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# Environment variables
+ENV PACKETBEAT_HOME /opt/packetbeat-${VERSION}-${PLATFORM}
+ENV PATH $PATH:${PACKETBEAT_HOME}
 
-RUN curl -L -O https://download.elastic.co/beats/packetbeat/${FILENAME} \
- && tar xzvf ${FILENAME}
+WORKDIR /opt/
 
-# RUN mkdir -p /usr/share/GeoIP \
-#  && cd /usr/share/GeoIP/ \
-#  && curl -S -L -O http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz \
-#  && gzip -d GeoLiteCity.dat.gz \
-#  && rm -f GeoLiteCity.dat.gz
+RUN wget -q -O - http://download.elastic.co/beats/packetbeat/${FILENAME} | tar xz -C .
 
-ADD packetbeat.yml /etc/packetbeat/packetbeat.yml
+ADD packetbeat.yml ${PACKETBEAT_HOME}/
+ADD docker-entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-WORKDIR packetbeat-${VERSION}-${PLATFORM}
-
-CMD ["./packetbeat", "-e", "-c=/etc/packetbeat/packetbeat.yml"]
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["start"]

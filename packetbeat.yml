@@ -13,7 +13,7 @@
 # Select the network interfaces to sniff the data. You can use the "any"
 # keyword to sniff on all connected interfaces.
 interfaces:
-  device: any
+  device: {{DEVICE}}
 
 ############################# Protocols #######################################
 protocols:
@@ -152,12 +152,12 @@ protocols:
 output:
 
   ### Elasticsearch as output
-  elasticsearch:
+  #elasticsearch:
     # Array of hosts to connect to.
     # Scheme and port can be left out and will be set to the default (http and 9200)
     # In case you specify and additional path, the scheme is required: http://localhost:9200/path
     # IPv6 addresses should always be defined as: https://[2001:db8::1]:9200
-    hosts: ["localhost:9200"]
+    #hosts: ["localhost:9200"]
 
     # Optional protocol and basic auth credentials.
     #protocol: "https"
@@ -233,9 +233,9 @@ output:
 
 
   ### Logstash as output
-  #logstash:
+  logstash:
     # The Logstash hosts
-    #hosts: ["localhost:5044"]
+    hosts: ["{{LOGSTASH_HOST}}:{{LOGSTASH_PORT}}"]
 
     # Number of workers per Logstash host.
     #worker: 1
@@ -249,7 +249,7 @@ output:
     # Optional index name. The default index name depends on the each beat.
     # For Packetbeat, the default is set to packetbeat, for Topbeat
     # top topbeat and for Filebeat to filebeat.
-    #index: packetbeat
+    index: {{INDEX}}
 
     # Optional TLS. By default is off.
     #tls:
@@ -305,12 +305,12 @@ shipper:
   # The name of the shipper that publishes the network data. It can be used to group
   # all the transactions sent by a single shipper in the web interface.
   # If this options is not defined, the hostname is used.
-  #name:
+  name: {{SHIPPER_NAME}}
 
   # The tags of the shipper are included in their own field with each
   # transaction published. Tags make it easy to group servers by different
   # logical properties.
-  #tags: ["service-X", "web-tier"]
+  tags: [{{SHIPPER_TAGS}}]
 
   # Uncomment the following if you want to ignore transactions created
   # by the server on which the shipper is installed. This option is useful
@@ -346,11 +346,11 @@ logging:
 
   # Send all logging output to syslog. On Windows default is false, otherwise
   # default is true.
-  #to_syslog: true
+  to_syslog: false
 
   # Write all logging output to files. Beats automatically rotate files if rotateeverybytes
   # limit is reached.
-  #to_files: false
+  to_files: false
 
   # To enable logging to files, to_files option has to be set to true
   files:
