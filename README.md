@@ -1,9 +1,6 @@
-jonnybgod/packetbeat
-=================
-
 [![](https://badge.imagelayers.io/jonnybgod/packetbeat:latest.svg)](https://imagelayers.io/?images=jonnybgod/packetbeat:latest)
 
-# What is packetbeat?
+# What is Packetbeat?
 Packetbeat is an open source network packet analyzer that ships the data to Elasticsearch. Think of it like a distributed real-time Wireshark with a lot more analytics features.
 
 ![alt text](https://static-www.elastic.co/assets/blta28996a125bb8b42/packetbeat-fish-nodes-bkgd.png?q=755 "Packetbeat logo")
